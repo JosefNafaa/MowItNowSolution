@@ -17,7 +17,7 @@ public class Principale {
 
 	public static void main(String[] args) {
 
-		String filename = "fichiers//InputFile.txt";
+		String filename = "fichiers//inputFile.txt";
 		String[] st = allLinesFile(filename);
 
 		System.out.println("Le fichier suivant est fourni en entrée :");
