@@ -161,4 +161,26 @@ public class ExecuterInstruction {
 
 	}
 
+	/**
+	 * 
+	 * @param positions :la liste des positions finales des tendeuses
+	 * @return la listes en string
+	 */
+	public static List<String> outputResultat(List<Position> positions) {
+
+		List<String> lines = new ArrayList<String>();
+		String line = new String();
+		line = "";
+
+		for (Position pos : positions) {
+			line = "" + pos.getPoint().getX() + " " + pos.getPoint().getY() + " "
+					+ pos.getDirection().getCodeORientation();
+			lines.add(line);
+			line = "";
+
+		}
+		return lines;
+
+	}
+
 }

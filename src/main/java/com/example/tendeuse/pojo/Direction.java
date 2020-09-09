@@ -24,5 +24,6 @@ public enum Direction {
 	public int getCoordonneY() {
 		return coordonneY;
 	}
+	
 
 }

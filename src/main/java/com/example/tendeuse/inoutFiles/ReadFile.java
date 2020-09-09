@@ -11,9 +11,22 @@ import com.example.tendeuse.exceptions.TendeuseExceptions;
 import com.example.tendeuse.util.MessageConstants;
 
 public class ReadFile {
+	public static int numeroLigne = 1;
+	
+
+	public static int getNumeroLigne() {
+		return numeroLigne;
+	}
+
+
+	public static void setNumeroLigne(int numeroLigne) {
+		ReadFile.numeroLigne = numeroLigne;
+	}
+
 
 	public static String[] readLines(String filename) {
 		FileReader fileReader = null;
+
 		try {
 			fileReader = new FileReader(filename);
 		} catch (FileNotFoundException e) {
@@ -34,7 +47,10 @@ public class ReadFile {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		if (lines.size() == 0)
+			throw new TendeuseExceptions(MessageConstants.ERREUR_FICHIER_VIDE);
+		else if (lines.size() < 3)
+			throw new TendeuseExceptions(MessageConstants.ERREUR_FICHIER_INCOMPLET);
 		try {
 			bufferedReader.close();
 		} catch (IOException e) {

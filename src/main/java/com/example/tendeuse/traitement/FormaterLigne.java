@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import com.example.tendeuse.exceptions.TendeuseExceptions;
+import com.example.tendeuse.inoutFiles.ReadFile;
 import com.example.tendeuse.pojo.Direction;
 import com.example.tendeuse.pojo.Instruction;
 import com.example.tendeuse.pojo.Point;
@@ -23,19 +24,23 @@ public class FormaterLigne {
 	 */
 	public static Point formaterLignePoint(String lignePoint) {
 		Point point = new Point();
+		ValiderFIle.validerLignePoint(lignePoint);
+		final String SEPARATEUR = " ";
+		String mots[] = lignePoint.split(SEPARATEUR);
+		String coordonneeX = mots[0];
+		String coordonneeY = mots[1];
 
-		lignePoint = lignePoint.replaceAll(espace, "");
-		char coordonneeX = lignePoint.charAt(0);
-		char coordonneeY = lignePoint.charAt(1);
 		try {
 			point.setX(Integer.parseInt(String.valueOf(coordonneeX)));
 		} catch (NumberFormatException e) {
-			throw new TendeuseExceptions(MessageConstants.COOORDONE_INCORRECTE);
+			throw new TendeuseExceptions("Erreur dans la ligne numéro:" + ReadFile.numeroLigne + " "
+					+ MessageConstants.COOORDONE_INCORRECTE);
 		}
 		try {
 			point.setY(Integer.parseInt(String.valueOf(coordonneeY)));
 		} catch (NumberFormatException e) {
-			throw new TendeuseExceptions(MessageConstants.COOORDONE_INCORRECTE);
+			throw new TendeuseExceptions("Erreur dans la ligne numéro : " + ReadFile.numeroLigne + " "
+					+ MessageConstants.COOORDONE_INCORRECTE);
 		}
 
 		return point;
@@ -51,9 +56,13 @@ public class FormaterLigne {
 	public static Position formaterLignePosition(String lignePosition) {
 		Position position = new Position();
 		Point point = new Point();
-		point = formaterLignePoint(lignePosition.substring(0, 4));
+		ValiderFIle.validerLignePosition(lignePosition);
+		final String SEPARATEUR = " ";
+		String mots[] = lignePosition.split(SEPARATEUR);
+		String lignePoint = mots[0] + " " + mots[1];
+		point = formaterLignePoint(lignePoint);
 		position.setPoint(point);
-		String orientation = lignePosition.substring(4, 5);
+		String orientation = mots[2];
 		if (Pattern.matches("[NSEW]+", orientation)) {
 			// Do something
 			switch (orientation) {
@@ -72,7 +81,8 @@ public class FormaterLigne {
 			}
 
 		} else {
-			throw new TendeuseExceptions(MessageConstants.ORIENTATION_INCORRECTE);
+			throw new TendeuseExceptions("Erreur dans la ligne numéro:" + ReadFile.numeroLigne + " "
+					+ MessageConstants.ORIENTATION_INCORRECTE);
 		}
 		return position;
 	}
@@ -104,7 +114,8 @@ public class FormaterLigne {
 
 			}
 		} else {
-			throw new TendeuseExceptions(MessageConstants.INSTRUCTION_INCORRECTE);
+			throw new TendeuseExceptions("Erreur dans la ligne numéro:" + ReadFile.numeroLigne + " "
+					+ MessageConstants.INSTRUCTION_INCORRECTE);
 		}
 		return instructions;
 	}

@@ -13,37 +13,49 @@ import com.example.tendeuse.traitement.ExecuterInstruction;
 import com.example.tendeuse.traitement.FormaterLigne;
 import com.example.tendeuse.traitement.ParserFile;
 
-public class Main2 {
+public class Principale {
 
 	public static void main(String[] args) {
-		String filename = "D:\\Cours\\Tendeuse\\InputFile.txt";
 
+		String filename = "fichiers//InputFile.txt";
+		String[] st = allLinesFile(filename);
+
+		System.out.println("Le fichier suivant est fourni en entrée :");
+		for (String string : st) {
+			System.out.println(string);
+		}
+		List<String> lines = lancerProgramme(filename);
+		System.out.println();
+		afficherResultat(lines);
+
+	}
+
+	public static void afficherResultat(List<String> lines) {
+		System.out.println("Le résultat apres le processus :");
+		for (String string : lines) {
+			System.out.println(string);
+		}
+	}
+
+	public static String[] allLinesFile(String filename) {
 		String[] st = ReadFile.readLines(filename);
+		return st;
+	}
+
+	public static List<String> lancerProgramme(String filename) {
+		String[] st = allLinesFile(filename);
 		String lignePoint = st[0];
 		Point point = FormaterLigne.formaterLignePoint(lignePoint);
-		System.out.println("coin sup");
-		System.out.println(point);
 		Pelouse pelouse = new Pelouse();
 		pelouse.setCoinSup(point);
+		ReadFile.numeroLigne++;
 		String[] stringArray = ReadFile.readLines(filename);
 		String[] modifiedArray = Arrays.copyOfRange(stringArray, 1, stringArray.length);
-		System.out.println(stringArray[0]);
-		System.out.println(modifiedArray[0]);
 		List<Tendeuse> tendeuseList = new ArrayList<Tendeuse>();
 		tendeuseList = ParserFile.alimenterTendeuses(modifiedArray);
-		System.out.println("toutes les tendeuses");
-		for (Tendeuse tendeuse : tendeuseList) {
-			System.out.println(tendeuse.getPosition());
-			System.out.println(tendeuse.getInstructions());
-		}
-
 		List<Position> allPositions = ExecuterInstruction.lancerToutesTendeuses(tendeuseList);
-
-		System.out.println("apres le traitement");
-		for (Position position : allPositions) {
-			System.out.println(position);
-		}
-
+		List<String> lines = ExecuterInstruction.outputResultat(allPositions);
+		return lines;
 	}
 
 }
